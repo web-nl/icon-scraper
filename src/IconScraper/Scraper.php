@@ -156,10 +156,13 @@ class Scraper
                     }
 
                     $size = $link->hasAttribute('sizes') ? $link->getAttribute('sizes') : [];
-                    $size = !is_array($size) ? explode('x', $size) : $size;
+                    if(is_string($size) && preg_match('/^([0-9]+)x([0-9]+)$/', $size, $matches)) {
+                        $size = array_slice($matches, 1);
+                    } else {
+                        $size = [];
+                    }
 
                     $type = false;
-
                     switch(strtolower($attribute)) {
                         case Icon::APPLE_TOUCH:
                             $type = Icon::APPLE_TOUCH;
@@ -167,7 +170,6 @@ class Scraper
                         default:
                             if(strpos(strtolower($attribute), 'icon') !== FALSE) {
                                 $type = Icon::FAVICON;
-                                $size = [];
                             }
                     };
 
