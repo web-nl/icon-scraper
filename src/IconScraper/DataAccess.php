@@ -19,7 +19,7 @@ class DataAccess {
 
         // get_headers already follows redirects and stacks headers up in array
         $headers = @get_headers($url, TRUE);
-        $headers = array_change_key_case($headers);
+        $headers = ($headers !== false ? array_change_key_case($headers) : []);
 
         // if there were multiple redirects flatten down the location header
         if (isset($headers['location']) && is_array($headers['location'])) {
