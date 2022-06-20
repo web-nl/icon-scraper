@@ -150,6 +150,15 @@ class Scraper
 
                     $attribute = $link->getAttribute('rel');
 
+                    // Case of protocol-relative URLs
+                    if (substr($href, 0, 2) === '//') {
+                        if (preg_match('%^(https?:)//%i', $url, $matches)) {
+                            $href = $matches[1] . $href;
+                        } else {
+                            $href = 'https:' . $href;
+                        }
+                    }
+
                     // Make sure the href is an absolute URL.
                     if ($href && filter_var($href, FILTER_VALIDATE_URL) === false) {
                         $href = $url . '/' . $href; //Todo: Improve this
